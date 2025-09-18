@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="454747f2-6741-4ebd-a86e-b3d586cf312c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="azure-deveops-ci-cd-apiFlow" doc:id="dfb0232a-1319-4208-a286-43b0a9e4a581" >
+		<http:listener doc:name="Listener" doc:id="c970d171-8808-4ffa-93bf-55c5b40338f1" config-ref="HTTP_Listener_config" path="/azure"/>
+		<ee:transform doc:name="Transform Message" doc:id="c87332e5-0db2-42bc-9220-be50f2cefb24" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"This api is to deploy to cloudhub by using azure devops"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="0d4ae64c-2c92-4ea2-b25e-2c99ef9cefd3" message="#[payload]"/>
+	</flow>
+</mule>
